@@ -24,10 +24,11 @@ int main(int argc, char *argv[]) {
 	//}
 
 	vector<Variable> allVariables;
+	vector<Operation> allOperations;
 	//IO, we must set up the writing of the variables to the outputs [Handled once AllVars returns]
 	//Create vector of all Variables [Done with allVariables]
-	//Map the Operations [Operation Class will handle this]
-	allVariables = inputFileToVariables(argv[1]);
+	//Map the Operations [Not Done]
+	allVariables = inputFileToVariables(argv[1], &allOperations);
 	
 	//Send to the force directed scheduling.
 
