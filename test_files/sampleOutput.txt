@@ -1,0 +1,62 @@
+module HLSM (Clk, Rst, Start, Done, a, b, c, z, x);
+  input Clk, Rst, Start;
+  output reg Done;
+  
+  //Parameters in file and States from file
+  input [15:0] a, b, c;
+  output [7:0] z;
+  output [15:0] x;
+  
+  variable [7:0] d, e, f, g;
+  
+  parameter wait = 0,
+          S1 = 1,
+          S2 = 2
+          S3 = 3,
+          S4 = 4,
+          S5 = 5;
+          S6 = 6;
+          Final = 5;
+          
+  reg [3:0] State, StateNext;
+  
+  always @(State) begin
+    case(State):
+      wait : begin
+        if (!Start)
+          StateNext <= wait;
+        else 
+          StateNext <= S1;
+      end
+      S1: begin
+        d = a + b;
+        e = a + c;
+        StateNext <= S2;
+      end
+      S2: begin
+        g = d > e;
+        f = a * c;
+        StateNext <= S3;
+      end
+      S3: begin
+        z = g ? d : e;
+        StateNext <= S4;
+      end
+      S4: begin
+        x = f - d;
+        StateNext <= Final;
+      end
+      Final: begin
+        StateNext <= wait;
+      end
+     endcase
+  end
+  
+  always @(posedge Clk) begin
+    if (Rst == 1) 
+      State <= wait;
+    else
+      State <= StateNext;
+  end
+  
+endmodule
