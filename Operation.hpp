@@ -41,6 +41,7 @@ public:
 	//setters
 	void setOperation(std::string operation) {
 		this->operation = operation;
+		this->delay = calcDelay(operation);
 	}
 
 	void setDelay(int delay) {
