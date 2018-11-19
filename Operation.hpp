@@ -9,11 +9,13 @@ private:
 	int delay;
 	std::vector<Variable> inputs;
 	Variable output;
+	std::vector<Operation*> predecessor; //All Operation nodes that are predecessors 
+	std::vector<Operation*> successor;	//All Operation nodes that are successors
 
 public:
 	Operation() { //default constructor
-		this->delay = 0;
-		this->operation = '@';
+		std::string operation = "DUMMY";
+		int delay = -1;	
 	}
 	Operation(std::string operation, std::vector<Variable> inputs, Variable output) {
 		this->operation = operation;
@@ -36,6 +38,14 @@ public:
 
 	Variable getOutput() {
 		return this->output;
+	}
+
+	std::vector<Operation *> getPredecessors() {
+		return this->predecessor;
+	}
+
+	std::vector<Operation *> getSuccessors() {
+		return this->successor;
 	}
 
 	//setters
@@ -68,6 +78,14 @@ public:
 		else
 			return 1;
 	}
-	//Need to map operation to cycle count
+	
+	void setPredecessor(Operation *predOp) {
+		this->predecessor.push_back(predOp);
+	}
+
+	void setSuccessor(Operation *succOp) {
+		this->successor.push_back(succOp);
+	}
+
 };
 #endif
