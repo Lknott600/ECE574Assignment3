@@ -3,7 +3,7 @@
 vector<Variable> inputFileToVariables(string fileName, vector<Operation> *allOps)
 {
 	//Variable Declaration
-	int i, maxDatawidth, pos = 0, operandCount = 0, count = 0;
+	int maxDatawidth, pos = 0, operandCount = 0, count = 0;
 	bool signedFlag, flagIncDec, validVar = false;
 
 	ifstream iFile;
@@ -225,7 +225,7 @@ void dependentOperation(Operation *currOperation, vector<Operation> *allOperatio
 
 	for (i = 0; i < (*allOperations).size(); i++) {
 		//Check all output vars against inputs
-		printf("%d", currOp.getInputs().size());
+        printf("%lu", currOp.getInputs().size());
 		for (j = 0; j < currOp.getInputs().size(); j++) {
 			if (currOp.getInputs().at(j).getName().compare((*allOperations).at(i).getOutput().getName()) == 0) {
 				//This node is a predecessor

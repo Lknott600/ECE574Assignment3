@@ -14,14 +14,16 @@ hlsyn cFile latency(int) verilogFile(output.v)
 #include <algorithm>
 #include "Variable.hpp"
 #include "functionsIO.hpp"
+#include "functionsScheduling.hpp"
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
 
-	//if (argc != 3) {
-	//	cout << "Usage: main inputFile outputFile" << endl;
-	//	return EXIT_FAILURE;
-	//}
+    if (argc != 4) {
+        cout << "Usage: hlsyn cFile latency verilogFile" << endl;
+        return EXIT_FAILURE;
+    }
 
 	vector<Variable> allVariables;
 	vector<Operation> allOps;
@@ -37,9 +39,13 @@ int main(int argc, char *argv[]) {
 		dependentOperation(&(*allOperations).at(i), allOperations);
 	}
 	//Send to the force directed scheduling.
+    schedule_ASAP(*allOperations);
+    schedule_ALAP(*allOperations, *argv[2]);
+    computeProbabilities(*allOperations, *argv[2]);
+    computeTypeDistributions(*allOperations, *argv[2]);
 
 	//writing to output file
-	outputFileCreate(allVariables, argv[2]);
+	outputFileCreate(allVariables, argv[3]);
 	
 	return 0;
 };
