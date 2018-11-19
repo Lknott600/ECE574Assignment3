@@ -1,6 +1,7 @@
 #ifndef OPERATION_HPP
 #define OPERATION_HPP
 #include <string>
+#include <vector>
 #include "Variable.hpp"
 
 class Operation {
