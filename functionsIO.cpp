@@ -3,7 +3,7 @@
 vector<Variable> inputFileToVariables(string fileName, vector<Operation> *allOps)
 {
 	//Variable Declaration
-	int i, maxDatawidth, pos = 0, flagExtendLocVar1, flagExtendLocVar2, operandCount = 0, count = 0;
+	int i, maxDatawidth, pos = 0, operandCount = 0, count = 0;
 	bool signedFlag, flagIncDec, validVar = false;
 
 	ifstream iFile;
@@ -15,8 +15,7 @@ vector<Variable> inputFileToVariables(string fileName, vector<Operation> *allOps
 	Variable tempVar;
 	vector<Variable> allVariables;
 	vector<Variable> currOperand;
-	vector<Operation> allOperations;
-
+	vector<Operation> allOperations = *allOps;
 	iFile.open(fileName); //THIS IS THE ONE BOYS
 
 	if (iFile.is_open()) {
@@ -24,8 +23,6 @@ vector<Variable> inputFileToVariables(string fileName, vector<Operation> *allOps
 			string val;
 			count = 0;
 			maxDatawidth = 0;
-			flagExtendLocVar1 = 0;
-			flagExtendLocVar2 = 0;
 			signedFlag = true;
 			flagIncDec = false;
 			validVar = false;
@@ -41,9 +38,8 @@ vector<Variable> inputFileToVariables(string fileName, vector<Operation> *allOps
 			}
 			else {
 				//Make call to the create operations function
-				allOperations = compileListOfOperations(line, allVariables, allOperations,
-					currOperand, val, count, validVar, signedFlag, maxDatawidth, flagExtendLocVar1,
-					flagExtendLocVar2, operandCount, flagIncDec);
+				compileListOfOperations(line, allVariables, &allOperations,
+					currOperand, val, count, validVar, signedFlag, maxDatawidth, operandCount, flagIncDec);
 			}
 		}
 	}
@@ -139,17 +135,16 @@ vector<Variable> compileListOfVariables(string line, vector<Variable> allVariabl
 }
 
 
-vector<Operation> compileListOfOperations(string line, vector<Variable> allVariables, vector<Operation> allOperations,
+void compileListOfOperations(string line, vector<Variable> allVariables, vector<Operation> *allOperations,
 										vector<Variable> currOperand, string val, int count, bool validVar, bool signedFlag,
-										int maxDatawidth, int flagExtendLocVar1, int flagExtendLocVar2, int operandCount,
+										int maxDatawidth, int operandCount,
 										bool flagIncDec) {
 	istringstream opStream(line);
 	istringstream tempStream(line);
 	int i;
-	if (line.compare("") == 0) {
-		return allOperations;	//Continue on empty lines
-	}
-
+	if (line.compare("") == 0) //Continue on empty lines
+		return;	
+	vector<Operation> allOps = *allOperations;
 	//determining dependencies
 	string var1, var2, operand;
 	tempStream >> var1;
@@ -173,23 +168,8 @@ vector<Operation> compileListOfOperations(string line, vector<Variable> allVaria
 				//Make sure var exists
 				validVar = false; //reset validVar flag after each iteration otherwise one valid var will make whole circuit "valid"
 				if (allVariables.at(i).getName().compare(val) == 0) {
-					//Default is signed, swap flag on unsigned
-					if (allVariables[i].getUnSigned() == false)
-						signedFlag = false;
-					if (maxDatawidth < allVariables[i].getBitWidth())
-						maxDatawidth = allVariables[i].getBitWidth();
-					if (count == 2 && maxDatawidth != allVariables[i].getBitWidth() && allVariables[i].getUnSigned() == false)
-						flagExtendLocVar1 = 1;
-					if (count == 2 && maxDatawidth != allVariables[i].getBitWidth() && allVariables[i].getUnSigned() == true)
-						flagExtendLocVar1 = 2;
-					if (count == 4 && maxDatawidth != allVariables[i].getBitWidth() && allVariables[i].getUnSigned() == false)
-						flagExtendLocVar2 = 1;
-					if (count == 4 && maxDatawidth != allVariables[i].getBitWidth() && allVariables[i].getUnSigned() == true)
-						flagExtendLocVar2 = 2;
-
 					validVar = true;
 					currOperand.push_back(allVariables[i]);
-
 					break;
 				}
 
@@ -222,7 +202,39 @@ vector<Operation> compileListOfOperations(string line, vector<Variable> allVaria
 	tempOperation.setOutput(currOperand.at(0));
 	currOperand.erase(currOperand.begin());
 	tempOperation.setInputs(currOperand);
+
+	allOps.push_back(tempOperation);
+	//Add operation to the list
+	//(*allOperations).push_back(tempOperation);
 	operandCount += 1;
-	allOperations.push_back(tempOperation);
-	return allOperations;
+	*allOperations = allOps;
+	return;
+}
+
+//Function will set the currOperations predecessor nodes and then set it as a successor of any of these nodes
+void dependentOperation(Operation *currOperation, vector<Operation> *allOperations) {
+	//TODO: Add Logic to set its Pred, and set its pred's successor Node
+	//Iterate through all operations, 
+	//if the inputs of this operation are an output of any then
+	//Set tempOp -> pred to that node
+	// TempOp->thatNode = set its successor node.
+	Operation currOp = *currOperation;
+	int i, j;
+	//Null Check
+	if ((*allOperations).empty() == true) return;
+
+	for (i = 0; i < (*allOperations).size(); i++) {
+		//Check all output vars against inputs
+		printf("%d", currOp.getInputs().size());
+		for (j = 0; j < currOp.getInputs().size(); j++) {
+			if (currOp.getInputs().at(j).getName().compare((*allOperations).at(i).getOutput().getName()) == 0) {
+				//This node is a predecessor
+				(*allOperations).at(i).setSuccessor(currOperation);
+				currOp.setPredecessor(&(*allOperations).at(i));
+			}
+		}
+	}
+	//*allOperations = &allOps;
+	*currOperation = currOp;
+	//Return
 }
