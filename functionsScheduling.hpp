@@ -9,7 +9,6 @@ void computeProbabilities(std::vector<Operation> allOperations, int latency);
 void computeTypeDistributions(std::vector<Operation> allOperations, int latency);
 
 void schedule_ASAP(std::vector<Operation> allOperations) {
-    
     for (Operation op : allOperations) {
         if (!(op.getPredecessors().size() == 0))
             op.setAsapTime(1);
@@ -19,7 +18,6 @@ void schedule_ASAP(std::vector<Operation> allOperations) {
 }
 
 void schedule_ALAP(std::vector<Operation> allOperations, int latency) {
-    
     for (Operation op : allOperations) {
         if (!(op.getPredecessors().size() == 0))
             op.setAlapTime(latency);

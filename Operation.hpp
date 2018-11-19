@@ -98,12 +98,14 @@ public:
     void setAlapTime(int alapTime) {
         this->alapTime = alapTime;
     }
-    void addProbability(float probability, int timeStamp) {
-        this->probabilities.at(timeStamp) = probability;
+    void addProbability(float probability) {
+        this->probabilities.push_back(probability);
     }
     void addToProbabilityAtTimeStamp(float probability, int timeStamp) {
         this->probabilities.at(timeStamp) = probability + this->probabilities.at(timeStamp);
     }
-
+	void resizeProbability(int size) {
+		this->probabilities.resize(size);
+	}
 };
 #endif

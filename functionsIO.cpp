@@ -227,7 +227,7 @@ void dependentOperation(Operation *currOperation, vector<Operation> *allOperatio
 		//Check all output vars against inputs
         printf("%lu", currOp.getInputs().size());
 		for (j = 0; j < currOp.getInputs().size(); j++) {
-			if (currOp.getInputs().at(j).getName().compare((*allOperations).at(i).getOutput().getName()) == 0) {
+			if (currOp.getInputs().at(j).getName().compare(allOperations->at(i).getOutput().getName()) == 0) {
 				//This node is a predecessor
 				(*allOperations).at(i).setSuccessor(currOperation);
 				currOp.setPredecessor(&(*allOperations).at(i));

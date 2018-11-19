@@ -41,10 +41,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Send to the force directed scheduling.
-    schedule_ASAP(*allOperations);
-    schedule_ALAP(*allOperations, *argv[2]);
-    computeProbabilities(*allOperations, *argv[2]);
-    computeTypeDistributions(*allOperations, *argv[2]);
+   //  schedule_ASAP(*allOperations);
+   //  schedule_ALAP(*allOperations, *argv[2]);
+   //  computeProbabilities(*allOperations, *argv[2]);
+   //  computeTypeDistributions(*allOperations, *argv[2]);
 
 	// Evan's part (actual comment TBD)
 
