@@ -229,8 +229,8 @@ void dependentOperation(Operation *currOperation, vector<Operation> *allOperatio
 		for (j = 0; j < currOp.getInputs().size(); j++) {
 			if (currOp.getInputs().at(j).getName().compare(allOperations->at(i).getOutput().getName()) == 0) {
 				//This node is a predecessor
-				(*allOperations).at(i).setSuccessor(currOperation);
-				currOp.setPredecessor(&(*allOperations).at(i));
+                (*allOperations).at(i).addSuccessor(currOperation);
+                currOp.addPredecessor(&(*allOperations).at(i));
 			}
 		}
 	}

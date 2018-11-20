@@ -20,7 +20,7 @@ hlsyn cFile latency(int) verilogFile(output.v)
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
+    
     if (argc != 4) {
         cout << "Usage: hlsyn cFile latency verilogFile" << endl;
         return EXIT_FAILURE;
@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Send to the force directed scheduling.
-   //  schedule_ASAP(*allOperations);
-   //  schedule_ALAP(*allOperations, *argv[2]);
+    schedule_ASAP(*allOperations);
+    schedule_ALAP(*allOperations, atoi(argv[2]));
    //  computeProbabilities(*allOperations, *argv[2]);
    //  computeTypeDistributions(*allOperations, *argv[2]);
 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
 
 	// writing to output file
-	outputFileCreate(allVariables, argv[3]);
+//    outputFileCreate(allVariables, argv[3]);
 	
 	return 0;
 };

@@ -13,8 +13,8 @@ private:
 	std::vector<Operation*> predecessor; //All Operation nodes that are predecessors 
 	std::vector<Operation*> successor;	//All Operation nodes that are successors
     std::vector<float> probabilities; //in probabilities, the time that corresponds to that prob is the index in which it is in and the index is the timestep
-    int asapTime;
-    int alapTime;
+    int asapTime{0};
+    int alapTime{0};
 
 public:
 	Operation() { //default constructor
