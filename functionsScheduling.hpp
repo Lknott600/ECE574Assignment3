@@ -2,11 +2,13 @@
 #include <vector>
 #include <algorithm>
 #include "Operation.hpp"
+#include "Resource.hpp"
 
 void schedule_ASAP(std::vector<Operation> &allOperations);
 void schedule_ALAP(std::vector<Operation> &allOperations, int latency);
 void computeProbabilities(std::vector<Operation> &allOperations, int latency);
-void computeTypeDistributions(std::vector<Operation> &allOperations, int latency);
+std::vector<Resource> computeTypeDistributions(std::vector<Operation> &allOperations, int latency);
+void mappingToResource(Operation &op, std::vector<Operation> &resDistr, int ts);
 
 void schedule_ASAP(std::vector<Operation> &allOperations) {
     int maxAsap = 0;
@@ -47,13 +49,34 @@ void schedule_ALAP(std::vector<Operation> &allOperations, int latency) {
 void computeProbabilities(std::vector<Operation> &allOperations, int latency) {
     for (unsigned int i = 0; i < allOperations.size(); i++) {
         for (unsigned int j = 0; j <= latency; j++) { //do <= or equal to to have a index for one to latency (i.e each time stamp), we'll just ignore the zero index
-            if (i >= allOperations.at(i).getAsapTime() && i <= allOperations.at(i).getAlapTime())
+            if (j >= allOperations.at(i).getAsapTime() && j <= allOperations.at(i).getAlapTime())
                 allOperations.at(i).addProbability(1/float(allOperations.at(i).getAlapTime() - allOperations.at(i).getAsapTime() + 1));
             else
                 allOperations.at(i).addProbability(0.0);
         }
     }
 }
+
+
+
+//std::vector<Resource> computeTypeDistributions(std::vector<Operation> &allOperations, int latency) {
+//    vector<Resource> resDistr;
+//    
+//    for (unsigned int ts = 1; ts <= latency; ++ts) {
+//        for (unsigned int i = 0; i < allOperations.size(); ++i) {
+//            allOperations.at(i).getOperation();
+//        }
+//    }
+//    
+//    return resDistr;
+//}
+
+//void mappingToResource(Operation &op, std::vector<Operation> &resDistr, int ts) {
+//
+//    if (op.getOperation().compare()) {
+//
+//    }
+//}
 
 //void computeTypeDistributions(std::vector<Operation> &allOperations, int latency) {
 //    std::vector<Operation> uniqueOperations; //FIXME: make list of unique operations for circuit

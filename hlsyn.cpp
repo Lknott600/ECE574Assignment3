@@ -15,7 +15,7 @@ hlsyn cFile latency(int) verilogFile(output.v)
 #include "Variable.hpp"
 #include "functionsIO.hpp"
 #include "functionsScheduling.hpp"
-#include "ResourceType.hpp"
+#include "Resource.hpp"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     }
 
 	vector<Variable> allVariables;
-	vector<ResourceType> resourceTypes;
+	vector<Resource> resourceTypes;
 	vector<Operation> allOps;
 	vector<Operation> *allOperations = &allOps;
 	// IO, we must set up the writing of the variables to the outputs [Handled once AllVars returns]
@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
 	// Send to the force directed scheduling.
     schedule_ASAP(*allOperations);
     schedule_ALAP(*allOperations, atoi(argv[2]));
-   //  computeProbabilities(*allOperations, *argv[2]);
-   //  computeTypeDistributions(*allOperations, *argv[2]);
+    computeProbabilities(*allOperations, atoi(argv[2]));
+//    vector<Resource> resDistr = computeTypeDistributions(*allOperations, atoi(argv[2]));
 
 	// Evan's part (actual comment TBD)
 

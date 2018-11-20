@@ -15,12 +15,12 @@ public:
         this->operation = "undefined";
     }
     
-    Resource(std::string name)  {
-        this->name = name;
+    Resource(std::string operation)  {
+        this->operation = operation;
     }
     std::string getOperation() const {
         return this->operation;
     }
-}
+};
 
 #endif /* Resource_hpp */
