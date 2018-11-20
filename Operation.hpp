@@ -86,10 +86,10 @@ public:
 		else
 			return 1;
 	}
-	void setPredecessor(Operation *predOp) {
+	void addPredecessor(Operation *predOp) {
 		this->predecessor.push_back(predOp);
 	}
-	void setSuccessor(Operation *succOp) {
+	void addSuccessor(Operation *succOp) {
 		this->successor.push_back(succOp);
 	}
     void setAsapTime(int asapTime) {
