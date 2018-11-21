@@ -51,10 +51,10 @@ public:
 	std::vector<Operation *> getSuccessors() {
 		return this->successor;
 	}
-    int getAsapTime() {
+    int getAsapTime() const {
         return this->asapTime;
     }
-    int getAlapTime() {
+    int getAlapTime() const {
         return this->alapTime;
     }
     std::vector<float> getProbabilities() {
@@ -101,11 +101,5 @@ public:
     void addProbability(float probability) {
         this->probabilities.push_back(probability);
     }
-    void addToProbabilityAtTimeStamp(float probability, int timeStamp) {
-        this->probabilities.at(timeStamp) = probability + this->probabilities.at(timeStamp);
-    }
-	void resizeProbability(int size) {
-		this->probabilities.resize(size);
-	}
 };
 #endif
